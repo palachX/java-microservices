@@ -12,6 +12,7 @@
     <modules>
         <module>employee</module>
         <module>client</module>
+        <module>admin-server</module>
     </modules>
 
     <properties>

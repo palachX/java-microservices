@@ -1,3 +1,10 @@
+server:
+  port: 8080
+  address: 127.0.0.1
+logging:
+  level:
+    org.flywaydb: DEBUG
+    sql: info
 spring:
   application:
     name: employee
@@ -15,6 +22,27 @@ spring:
     default-schema: employee
   jpa:
     show-sql: true
+  boot:
+    admin:
+      client:
+        enabled: true
+        url: http://localhost:8085
+        instance:
+          name: employee-service
+          service-host-type: ip
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 #  security:
 #    oauth2:
 #      client:
@@ -33,9 +61,4 @@ spring:
 #              - view_client
 #              - microprofile-jwt
 #            authorization-grant-type: authorization_code
-server:
-  port: 8080
-logging:
-  level:
-    org.flywaydb: DEBUG
-    sql: info
+
