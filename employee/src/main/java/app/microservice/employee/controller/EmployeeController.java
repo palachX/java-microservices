@@ -6,10 +6,17 @@ import app.microservice.employee.entity.Employee;
 import app.microservice.employee.request.EmployeeStoreRequest;
 import app.microservice.employee.request.EmployeeUpdateRequest;
 import app.microservice.employee.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.StringToClassMapItem;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -29,6 +36,23 @@ public class EmployeeController {
     private final MessageSource messageSource;
 
     @GetMapping
+    @Operation(
+            description = "Список сотрудников",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            headers = @Header(name = "Content-Type", description = "Тип данных", example = "application/json"),
+                            content = {
+                                    @Content(
+                                            schema = @Schema(
+                                                    type = "array",
+                                                    implementation = Employee.class
+                                            )
+                                    )
+                            }
+                    )
+            }
+    )
     public Iterable<Employee> index(@RequestParam(name = "fullName", required = false) String fullName) {
         return employeeService.getAllEmployees(fullName);
     }
@@ -40,6 +64,40 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @Operation(
+            description = "Создание сотрудника",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(
+                                    type = "object",
+                                    properties = {
+                                            @StringToClassMapItem(key = "fullName", value = String.class),
+                                            @StringToClassMapItem(key = "phone", value = String.class)
+                                    }
+                            )
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            headers = @Header(name = "Content-Type", description = "Тип данных", example = "application/json"),
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(
+                                                    type = "object",
+                                                    properties = {
+                                                            @StringToClassMapItem(key = "id", value = Integer.class),
+                                                            @StringToClassMapItem(key = "fullName", value = String.class),
+                                                            @StringToClassMapItem(key = "phone", value = String.class)
+                                                    }
+                                            )
+                                    )
+                            }
+                    )
+            }
+    )
     public ResponseEntity<?> store(
             @Valid @RequestBody EmployeeStoreRequest storeRequest,
             BindingResult bindingResult
