@@ -15,6 +15,24 @@ spring:
     default-schema: employee
   jpa:
     show-sql: true
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:8082/realms/java-microservices
+#            user-name-attribute: preferred_username
+#        registration:
+#          employee-app:
+#            provider: keycloak
+#            client-id: employee-app
+#            client-secret: 0JnXSRZPopcPVO3RFCodLMGevrRdQAJw
+#            scope:
+#              - openid
+#              - edit_client
+#              - view_client
+#              - microprofile-jwt
+#            authorization-grant-type: authorization_code
 server:
   port: 8080
 logging:

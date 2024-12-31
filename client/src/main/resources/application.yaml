@@ -15,6 +15,11 @@ spring:
     default-schema: client
   jpa:
     show-sql: true
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8082/realms/java-microservices
 logging:
   level:
     org.flywaydb: DEBUG

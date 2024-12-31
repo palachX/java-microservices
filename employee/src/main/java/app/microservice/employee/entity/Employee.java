@@ -25,7 +25,7 @@ public class Employee {
     private Integer id;
 
     @NotNull
-    @Size(min = 5, max = 50)
+    @Size(min = 3, max = 50)
     private String fullName;
 
     @NotNull

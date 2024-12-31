@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: employee_service_db
+    container_name: microservices_db_java
     image: postgres:16.3
     ports:
       - ${POSTGRES_PORT:-5432}:5432
@@ -12,6 +12,17 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - default
+  keycloak:
+    container_name: microservices_keycloak
+    image: quay.io/keycloak/keycloak:24.0
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    command: [ "start-dev", "--import-realm" ]
+    volumes:
+      - ./config/keycloak/import:/opt/keycloak/data/import
+    ports:
+      - ${KC_PORT:-8080}:8080
 
 volumes:
   pgdata:
