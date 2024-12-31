@@ -1,0 +1,21 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: client
+  datasource:
+    url: jdbc:postgresql://localhost:6432/postgres
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    schemas:
+      - public
+      - client
+    default-schema: client
+  jpa:
+    show-sql: true
+logging:
+  level:
+    org.flywaydb: DEBUG
+    sql: info

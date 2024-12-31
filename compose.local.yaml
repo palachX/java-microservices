@@ -1,0 +1,17 @@
+services:
+  postgres:
+    container_name: employee_service_db
+    image: postgres:16.3
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - default
+
+volumes:
+  pgdata:

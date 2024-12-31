@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: employee
+  messages:
+    encoding: UTF-8
+    basename: messages
+  datasource:
+    url: jdbc:postgresql://localhost:6432/postgres
+    username: postgres
+    password: postgres
+  flyway:
+    schemas:
+      - public
+      - employee
+    default-schema: employee
+  jpa:
+    show-sql: true
+server:
+  port: 8080
+logging:
+  level:
+    org.flywaydb: DEBUG
+    sql: info
