@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>employee</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2.3-SNAPSHOT</version>
 	<name>employee</name>
 	<description>employee</description>
 	<url/>
@@ -119,6 +119,25 @@
 			<version>3.4.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.loki4j/loki-logback-appender -->
+		<dependency>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+		<dependency>
+			<groupId>org.codehaus.janino</groupId>
+			<artifactId>janino</artifactId>
+			<version>3.1.12</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-tracing -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -144,11 +163,6 @@
 			<groupId>net.ttddyy.observation</groupId>
 			<artifactId>datasource-micrometer-spring-boot</artifactId>
 			<version>1.0.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
 		</dependency>
 
 	</dependencies>
