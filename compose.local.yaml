@@ -51,6 +51,17 @@ services:
       - default
       - java-microservices
     user: "${UID}:${GID}"
+  loki:
+    container_name: microservices_loki
+    image: grafana/loki:latest
+    ports:
+      - ${LOKI_PORT:-3100}:3100
+    volumes:
+      - ./data/loki/:/var/lib/loki
+    user: "${UID}:${GID}"
+    networks:
+      - default
+      - java-microservices
 
 volumes:
   pgdata:
