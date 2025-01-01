@@ -12,6 +12,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - default
+      - java-microservices
   keycloak:
     container_name: microservices_keycloak
     image: quay.io/keycloak/keycloak:24.0
@@ -23,6 +24,37 @@ services:
       - ./config/keycloak/import:/opt/keycloak/data/import
     ports:
       - ${KC_PORT:-8080}:8080
+    networks:
+      - default
+      - java-microservices
+    user: "${UID}:${GID}"
+  victoria-metrics:
+    container_name: microservices_victoria_metrics
+    image: victoriametrics/victoria-metrics:latest
+    ports:
+      - ${VM_PORT:-8428}:8428
+    volumes:
+      - ./config/victoria-metrics/promscrape.yaml:/promscrape.yaml
+    command:
+      - '-promscrape.config=promscrape.yaml'
+    networks:
+      - default
+      - java-microservices
+  grafana:
+    container_name: microservices_grafana
+    image: grafana/grafana:latest
+    ports:
+      - ${GF_PORT:-3000}:3000
+    volumes:
+      - ./data/grafana/:/var/lib/grafana
+    networks:
+      - default
+      - java-microservices
+    user: "${UID}:${GID}"
 
 volumes:
   pgdata:
+
+networks:
+  java-microservices:
+    external: true

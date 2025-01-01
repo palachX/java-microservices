@@ -1,6 +1,6 @@
 server:
   port: 8080
-  address: 127.0.0.1
+#  address: 127.0.0.1
 logging:
   level:
     org.flywaydb: DEBUG
@@ -30,6 +30,7 @@ spring:
         instance:
           name: employee-service
           service-host-type: ip
+#          service-url: http://localhost:8080
 management:
   health:
     livenessstate:

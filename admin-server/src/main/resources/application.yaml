@@ -3,5 +3,10 @@ spring:
     name: admin-server
 server:
   port: 8085
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
