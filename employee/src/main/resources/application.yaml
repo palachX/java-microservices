@@ -1,3 +1,6 @@
+employee:
+  service:
+    url: http://localhost:8081
 server:
   port: 8080
 #  address: 127.0.0.1
@@ -44,6 +47,12 @@ management:
   endpoint:
     health:
       show-details: always
+  zipkin:
+    tracing:
+      endpoint: http://172.17.0.1:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
 #  security:
 #    oauth2:
 #      client:

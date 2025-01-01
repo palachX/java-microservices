@@ -62,6 +62,20 @@ services:
     networks:
       - default
       - java-microservices
+  tracing:
+    container_name: microservices_tracing
+    image: grafana/tempo:latest
+    ports:
+      - ${TRACING_TEMPO_PORT:-3200}:3200
+      - ${TRACING_GRPC_PORT:-9095}:9095
+      - ${TRACING_GRPC_TELEMETRY_PORT:-4317}:4317
+      - ${TRACING_GRPC_TELEMETRY_HTTP_PORT:-4318}:4318
+      - ${ZIPKIN_PORT:-9411}:9411
+      - ${JAGGER_PORT:-14268}:14268
+    volumes:
+      - ./config/tempo/tempo.yaml:/etc/tempo.yaml
+    command:
+      - '-config.file=/etc/tempo.yaml'
 
 volumes:
   pgdata:

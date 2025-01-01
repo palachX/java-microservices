@@ -1,0 +1,8 @@
+scrape_configs:
+  - job_name: 'java-microservices-metrics'
+    static_configs:
+      - targets: [
+        'http://localhost:8085',
+        'localhost:8085',
+      ]
+    metrics_path: /actuator/prometheus
