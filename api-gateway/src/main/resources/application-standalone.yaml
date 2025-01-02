@@ -5,11 +5,11 @@ spring:
     config:
       enabled: false
     gateway:
-        routes:
-          - id: employee-service-route
-            uri: http://localhost:8080
-            predicates:
-              - Host=employee.api.microservices
+      routes:
+        - id: employee
+          uri: lb://EMPLOYEE
+          predicates:
+            - Path=/api/v1/employees/**
 server:
   port: 8086
   forward-headers-strategy: framework

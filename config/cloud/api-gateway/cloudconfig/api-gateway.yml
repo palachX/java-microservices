@@ -2,10 +2,10 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: employee-service-route
-          uri: http://localhost:8080
+        - id: employee
+          uri: lb://EMPLOYEE
           predicates:
-            - Host=employee.api.microservices.127.0.0.1.nip.io
+            - Path=/api/v1/employees/**
 management:
   health:
     livenessstate:
