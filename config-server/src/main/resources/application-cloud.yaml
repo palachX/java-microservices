@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/palachX/java-microservices-config.git
+          clone-on-start: false
+          default-label: master
+          search-paths:
+            - '{application}/{profile}'
+server:
+  port: 8888
