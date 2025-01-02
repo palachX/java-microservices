@@ -78,6 +78,16 @@ services:
       - ${ADMIN_SERVER_PORT:-8085}:8085
     networks:
       - java-microservices-network
+  eureka-server:
+    container_name: microservices_eureka_server
+    build:
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: eureka-server/target/eureka-server-0.0.1-SNAPSHOT-exec.jar
+    ports:
+      - ${EUREKA_SERVER_PORT:-8761}:8761
+    networks:
+      - java-microservices-network
   employee-server:
     container_name: microservices_employee_server
     build:
@@ -89,6 +99,7 @@ services:
       DATABASE_URL: jdbc:postgresql://postgres:5432/postgres
       ZIPKIN_ENDPOINT: http://tracing:9411/api/v2/spans
       ADMIN_URL: http://admin-server:8085
+      EUREKA_URL: http://eureka-server:8761
       APP_NAME: employee
     ports:
       - ${EMPLOYEE_SERVER_PORT:-8080}:8080

@@ -13,6 +13,7 @@
         <module>employee</module>
         <module>client</module>
         <module>admin-server</module>
+        <module>eureka-server</module>
     </modules>
 
     <properties>

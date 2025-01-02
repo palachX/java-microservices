@@ -50,6 +50,12 @@ management:
   tracing:
     sampling:
       probability: 1.0
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
 #  security:
 #    oauth2:
 #      client:
@@ -68,4 +74,3 @@ management:
 #              - view_client
 #              - microprofile-jwt
 #            authorization-grant-type: authorization_code
-
