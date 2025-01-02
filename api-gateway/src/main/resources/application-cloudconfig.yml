@@ -1,8 +1,9 @@
 server:
-  port: 8080
+  port: 8086
+  forward-headers-strategy: framework
 spring:
   application:
-    name: employee
+    name: api-gateway
   config:
     import: "optional:configserver:"
   cloud:

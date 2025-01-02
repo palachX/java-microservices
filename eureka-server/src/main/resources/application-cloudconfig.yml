@@ -1,11 +1,10 @@
 server:
-  port: 8080
+  port: 8761
 spring:
   application:
-    name: employee
+    name: eureka-server
   config:
-    import: "optional:configserver:"
+    import: 'optional:configserver:'
   cloud:
     config:
-      enabled: true
       uri: ${CONFIG_URL:http://config:config-password@localhost:8888}

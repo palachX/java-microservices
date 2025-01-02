@@ -68,6 +68,23 @@ services:
     command: -config.file=/etc/tempo.yaml
     networks:
       - java-microservices-network
+  config-server:
+    container_name: microservices_config_server
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: config-server/target/config-server-0.0.1-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: file:///config/{application}/{profile}
+      LOKI: http://loki:3100
+    volumes:
+      - './config/cloud:/config'
+    ports:
+      - ${CONFIG_SERVER_PORT:-8888}:8888
+    networks:
+      - java-microservices-network
   eureka-server:
     container_name: microservices_eureka_server
     build:
@@ -75,8 +92,9 @@ services:
       args:
         JAR_FILE: eureka-server/target/eureka-server-0.0.1-SNAPSHOT-exec.jar
     environment:
-      SPRING_PROFILES_ACTIVE: cloud
+      SPRING_PROFILES_ACTIVE: cloudconfig
       LOKI: http://loki:3100
+      CONFIG_URL: http://config:config-password@config-server:8888
     ports:
       - ${EUREKA_SERVER_PORT:-8761}:8761
     networks:
@@ -88,10 +106,11 @@ services:
       args:
         JAR_FILE: admin-server/target/admin-server-0.0.1-SNAPSHOT-exec.jar
     environment:
-      SPRING_PROFILES_ACTIVE: cloud
+      SPRING_PROFILES_ACTIVE: cloudconfig
       LOKI: http://loki:3100
       EUREKA_URL: http://eureka-server:8761/eureka/
       APP_NAME: admin
+      CONFIG_URL: http://config:config-password@config-server:8888
     ports:
       - ${ADMIN_SERVER_PORT:-8085}:8085
     networks:
@@ -101,16 +120,36 @@ services:
     build:
       dockerfile: Dockerfile
       args:
-        JAR_FILE: employee/target/employee-0.2.4-SNAPSHOT-exec.jar
+        JAR_FILE: employee/target/employee-0.3.0-SNAPSHOT-exec.jar
     environment:
-      SPRING_PROFILES_ACTIVE: cloud
+      SPRING_PROFILES_ACTIVE: cloudconfig
+      APP_NAME: employee
       LOKI: http://loki:3100
       DATABASE_URL: jdbc:postgresql://postgres:5432/postgres
-      ZIPKIN_ENDPOINT: http://tracing:9411/api/v2/spans
+      ZIPKIN_URL: http://tracing:9411/api/v2/spans
       ADMIN_URL: http://admin-server:8085
-      APP_NAME: employee
+      EUREKA_URL: http://eureka-server:8761/eureka/
+      CONFIG_URL: http://config:config-password@config-server:8888
     ports:
       - ${EMPLOYEE_SERVER_PORT:-8080}:8080
+    networks:
+      - java-microservices-network
+  api-gateway:
+    container_name: microservices_api_gateway
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: api-gateway/target/api-gateway-0.0.1-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
+      LOKI: http://loki:3100
+      EUREKA_URL: http://eureka-server:8761/eureka/
+      APP_NAME: api-gateway
+      CONFIG_URL: http://config:config-password@config-server:8888
+      ZIPKIN_URL: http://tracing:9411/api/v2/spans
+    ports:
+      - ${API_GATEWAY_PORT:-8086}:8086
     networks:
       - java-microservices-network
 

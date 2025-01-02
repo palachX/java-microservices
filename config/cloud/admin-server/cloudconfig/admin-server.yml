@@ -1,0 +1,16 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 1
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    registryFetchIntervalSeconds: 1
+    register-with-eureka: false

@@ -1,14 +1,8 @@
-spring:
-  application:
-    name: eureka-server
-  cloud:
-    config:
-      enabled: false
-server:
-  port: 8761
 eureka:
   instance:
-    hostname: localhost
+    hostname: eureka-server
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 1
   client:
     register-with-eureka: false
     fetch-registry: false

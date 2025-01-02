@@ -1,6 +1,5 @@
 server:
   port: 8080
-#  address: 127.0.0.1
 logging:
   level:
     org.flywaydb: DEBUG
@@ -12,7 +11,7 @@ spring:
     encoding: UTF-8
     basename: messages
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://postgres:6432/postgres}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:6432/postgres}
     username: postgres
     password: postgres
   flyway:
@@ -26,6 +25,9 @@ spring:
     admin:
       client:
         enabled: false
+  cloud:
+    config:
+      enabled: false
 management:
   health:
     livenessstate:
@@ -41,7 +43,7 @@ management:
       show-details: always
   zipkin:
     tracing:
-      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+      endpoint: ${ZIPKIN_URL:http://localhost:9411/api/v2/spans}
   tracing:
     sampling:
       probability: 1.0
