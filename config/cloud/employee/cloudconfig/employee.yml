@@ -1,20 +1,14 @@
-server:
-  port: 8080
 logging:
   level:
     org.flywaydb: DEBUG
     sql: info
+    org.springframework.cloud: DEBUG
 spring:
-  cloud:
-    config:
-      enabled: false
-  application:
-    name: employee
   messages:
     encoding: UTF-8
     basename: messages
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:6432/postgres}
+    url: ${DATABASE_URL:jdbc:postgresql://:6432/postgres}
     username: postgres
     password: postgres
   flyway:
@@ -27,11 +21,7 @@ spring:
   boot:
     admin:
       client:
-        enabled: true
-        url: ${ADMIN_URL:http://localhost:8085}
-        instance:
-          name: employee-service
-          service-host-type: ip
+        enabled: false
 management:
   health:
     livenessstate:

@@ -91,6 +91,7 @@ services:
       SPRING_PROFILES_ACTIVE: cloud
       LOKI: http://loki:3100
       EUREKA_URL: http://eureka-server:8761/eureka/
+      APP_NAME: admin
     ports:
       - ${ADMIN_SERVER_PORT:-8085}:8085
     networks:
