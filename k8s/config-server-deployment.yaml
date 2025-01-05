@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-microservice-config-server-deployment
+  labels:
+    app: java-microservice-config-server
+spec:
+  selector:
+    matchLabels:
+      app: java-microservice-config-server
+  template:
+    metadata:
+      labels:
+        app: java-microservice-config-server
+    spec:
+      containers:
+        - name: java-microservice-config-server
+          image: 192.168.3.14:5000/java-microservices-config-server:latest
+          ports:
+            - containerPort: 8888
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: git
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-microservice-config-server-service
+spec:
+  type: NodePort
+  selector:
+    app: java-microservice-config-server
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
