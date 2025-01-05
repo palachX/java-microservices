@@ -4,6 +4,8 @@ import app.microservice.client.dto.ClientStoreDTO;
 import app.microservice.client.dto.ClientUpdateDTO;
 import app.microservice.client.entity.Client;
 import app.microservice.client.repository.ClientRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository employeeRepository;
+    private final KafkaProducerClient kafkaProducerClient;
 
     @Override
     public Iterable<Client> getAllClients(String fullName) {
@@ -26,7 +29,17 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client createClient(ClientStoreDTO storeDTO) {
-        return employeeRepository.save(new Client(null, storeDTO.getFullName(), storeDTO.getPhone(), storeDTO.getAddress(), storeDTO.getEmail()));
+        var client = employeeRepository.save(new Client(null, storeDTO.getFullName(), storeDTO.getPhone(), storeDTO.getAddress(), storeDTO.getEmail()));
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            var clientJson = mapper.writeValueAsString(client);
+            this.kafkaProducerClient.send("clients", clientJson, client.getId().toString());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return client;
     }
 
     @Override
@@ -37,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
                     client.setPhone(updateDTO.getPhone());
                     client.setAddress(updateDTO.getAddress());
                     client.setEmail(updateDTO.getEmail());
-                },() -> {
+                }, () -> {
                     throw new NoSuchElementException();
                 });
     }
