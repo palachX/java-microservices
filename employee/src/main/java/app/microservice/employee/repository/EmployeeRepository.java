@@ -15,7 +15,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     /**
      * 1. Написание SQL запроса с использованием HQL
      * 2. Написание чистого SQL запрос
-     * 3. Написание SQL запроса с использованием JPA
+     * 3. Написание SQL запроса с использованием JPA (сам запрос в entity)
      */
       @Query(value = "SELECT e FROM Employee e WHERE e.fullName ILIKE %:fullName%")
     //  @Query(value = "select * from employee.users where full_name ILIKE CONCAT('%', :fullName, '%')", nativeQuery = true)
